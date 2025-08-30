@@ -1,31 +1,24 @@
 pipeline {
-    agent {
-        docker {
-            image 'esmini-regression:latest'
-            args '-v /tmp/logs:/workspace/logs'
-        }
-    }
+    agent none  // Don't specify an agent here
     parameters {
         string(name: 'CONFIG_FILE', defaultValue: 'configs/regression_highway.json', description: 'Regression config file')
     }
     stages {
         stage('Checkout') {
             steps {
-                echo "Jenkins workspace: ${env.WORKSPACE}"
-                git url: 'https://github.com/Akshay-sudo-ux/esmini-regression.git', branch: 'main'
-                sh 'ls -la ${env.WORKSPACE}'  // Check if files are available
-            }
-        }
-        stage('Verify Workspace Content') {
-            steps {
-                echo "Below is the content of the workspace:"
-                sh 'ls -la ${env.WORKSPACE}'  // Verify contents again inside container
+                git url: 'https://github.com/<your-username>/esmini-regressions.git', branch: 'main'
             }
         }
         stage('Run Regression') {
             steps {
-                echo "Running regression with config: ${params.CONFIG_FILE}"
-                sh "python3 regression.py --config ${params.CONFIG_FILE}"
+                script {
+                    def configFile = params.CONFIG_FILE
+                    sh """
+                        docker run -t -d -u 1000:1000 -v /tmp/logs:/workspace/logs -w /var/jenkins_home/workspace/esmini-regression \
+                        --volumes-from ${env.DOCKER_CONTAINER_ID} \
+                        esmini-regression:latest --config ${configFile}
+                    """
+                }
             }
         }
         stage('Archive Logs') {
@@ -35,3 +28,4 @@ pipeline {
         }
     }
 }
+

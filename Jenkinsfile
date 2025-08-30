@@ -16,11 +16,19 @@ pipeline {
         }
         stage('Run Regression') {
             steps {
-                // Echoing the contents of the workspace to ensure the files are correctly mounted
-                sh 'echo "Below is the content of the workspace:"'
-                sh 'ls -la /workspace'  // Debugging step to list files in the container workspace
-                // Running the regression with the correct config file path inside the container
-                sh "python3 /workspace/regression.py --config /workspace/${CONFIG_FILE}"
+                // Add debugging echo to ensure we print the contents of the workspace
+                script {
+                    echo "Below is the content of the workspace:"
+                }
+                sh '''
+                    # Debugging step to list files in the mounted workspace
+                    echo "Listing the contents of /workspace inside the Docker container:"
+                    ls -la /workspace
+
+                    # Now run the regression.py script with the given config file
+                    echo "Running regression.py with config file ${CONFIG_FILE}"
+                    python3 /workspace/regression.py --config /workspace/${CONFIG_FILE}
+                '''
             }
         }
         stage('Archive Logs') {

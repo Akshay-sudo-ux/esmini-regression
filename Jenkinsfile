@@ -11,8 +11,8 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git url: 'https://github.com/<your-username>/esmini-regressions.git', branch: 'main'
-            }
+		git url: 'https://github.com/Akshay-sudo-ux/esmini-regression.git', branch: 'main'
+                            }
         }
         stage('Run Regression') {
             steps {

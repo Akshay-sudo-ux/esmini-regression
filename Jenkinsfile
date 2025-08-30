@@ -16,6 +16,9 @@ pipeline {
         }
         stage('Run Regression') {
             steps {
+                // Echoing the contents of the workspace to ensure the files are correctly mounted
+                sh 'echo "Below is the content of the workspace:"'
+                sh 'ls -la /workspace'  // Debugging step to list files in the container workspace
                 // Running the regression with the correct config file path inside the container
                 sh "python3 /workspace/regression.py --config /workspace/${CONFIG_FILE}"
             }

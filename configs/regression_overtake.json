@@ -1,0 +1,6 @@
+{
+  "scenario": "overtake_lane_change.xosc",
+  "duration": 45,
+  "expected_result": "safe_distance",
+  "log_level": "debug"
+}

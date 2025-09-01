@@ -2,5 +2,14 @@
   "scenario": "highway_cut_in.xosc",
   "duration": 30,
   "expected_result": "no_collision",
-  "log_level": "info"
+  "log_level": "info",
+  "runs": 10
+}
+
+{
+  "scenario": "highway_cut_in.xosc",
+  "duration": 30,
+  "expected_result": "no_collision",
+  "log_level": "info",
+  "runs": 20
 }
